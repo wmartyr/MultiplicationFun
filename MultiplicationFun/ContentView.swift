@@ -15,21 +15,31 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Stepper("Enter the tables number to practice", value: $highestMultiplicationTable, in: 2...12)
-                Text("You have chosen to practice tables from 2 to \(highestMultiplicationTable)")
-                Picker("How many questions do you want?", selection: $questionNumber) {
-                    ForEach(questionNumbers, id: \.self) {
-                        Text(String($0))
+            Form {
+                Section {
+                    Picker("Enter the tables to practice", selection: $highestMultiplicationTable) {
+                        ForEach(2..<13) {
+                            Text("Up to \($0)")
+                        }
                     }
                 }
-                .pickerStyle(.segmented)
-                Text("You have chosen to answer \(questionNumber) questions")
+                Section("How many questions do you want") {
+                    Picker("Question number", selection: $questionNumber) {
+                        ForEach(questionNumbers, id: \.self) {
+                            Text(String($0))
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                Section {
+                    
+                }
             }
-            .padding(30)
-            .navigationTitle("Multiplication Fun")
+            
         }
     }
+    
+    
 }
 
 #Preview {
