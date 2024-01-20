@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var highestMultiplicationTable = 0
     @State private var questionNumber = 5
     @State private var multiplicand = 2
-    @State private var multiplier = 2
+    @State private var multiplier = 12
     @State private var score = 0
     @State private var answerArray = [0, 0, 0]
     @State private var correctAnswerIndex = 0
@@ -60,8 +60,8 @@ struct ContentView: View {
     }
     
     func generateNumbers() {
-        multiplicand = Int.random(in: 1..<(highestMultiplicationTable + 3))
-        multiplier = Int.random(in: 2..<(highestMultiplicationTable + 3))
+        multiplicand = Int.random(in: 2...(highestMultiplicationTable + 2))
+        multiplier = Int.random(in: 1...12)
     }
     
     func generateAnswerArray() {
@@ -88,7 +88,7 @@ struct ContentView: View {
     }
     
     func randomValidAnswer() -> Int {
-        return Int.random(in: 2...(highestMultiplicationTable * highestMultiplicationTable))
+        return Int.random(in: 2...((highestMultiplicationTable + 2) * 12))
     }
 }
 
