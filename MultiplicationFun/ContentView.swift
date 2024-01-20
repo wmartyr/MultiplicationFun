@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var highestMultiplicationTable = 2
+    @State private var highestMultiplicationTable = 0
     @State private var questionNumber = 5
+    @State private var multiplicand = 2
+    @State private var multiplier = 2
+    @State private var score = 0
+    @State private var answerArray = [Int]()
+    @State private var correctAnswerIndex = 0
     
     let questionNumbers = [5, 10, 20]
     
@@ -22,6 +27,10 @@ struct ContentView: View {
                             Text("Up to \($0)")
                         }
                     }
+                    .onChange(of: highestMultiplicationTable){
+                        generateNumbers()
+                    }
+                    Text("number is: \(highestMultiplicationTable + 2)")
                 }
                 Section("How many questions do you want") {
                     Picker("Question number", selection: $questionNumber) {
@@ -32,13 +41,27 @@ struct ContentView: View {
                     .pickerStyle(.segmented)
                 }
                 Section {
-                    
+                    Text("\(multiplicand) x \(multiplier) = ?")
                 }
             }
-            
         }
     }
     
+    func generateNumbers() {
+        multiplicand = Int.random(in: 1..<(highestMultiplicationTable + 3))
+        multiplier = Int.random(in: 2..<(highestMultiplicationTable + 3))
+    }
+    
+    func generateAnswerArray() {
+        correctAnswerIndex = Int.random(in: 0..<3)
+        for i in 0..<3 {
+            if i == correctAnswerIndex {
+                answerArray.append(multiplicand * multiplier)
+            } else {
+                answerArray.append(Int.random(in: 2...(highestMultiplicationTable * highestMultiplicationTable)))
+            }
+        }
+    }
     
 }
 
