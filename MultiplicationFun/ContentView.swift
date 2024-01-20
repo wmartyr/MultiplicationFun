@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var multiplicand = 2
     @State private var multiplier = 2
     @State private var score = 0
-    @State private var answerArray = [Int]()
+    @State private var answerArray = [0, 0, 0]
     @State private var correctAnswerIndex = 0
     
     let questionNumbers = [5, 10, 20]
@@ -29,6 +29,7 @@ struct ContentView: View {
                     }
                     .onChange(of: highestMultiplicationTable){
                         generateNumbers()
+                        generateAnswerArray()
                     }
                     Text("number is: \(highestMultiplicationTable + 2)")
                 }
@@ -43,6 +44,17 @@ struct ContentView: View {
                 Section {
                     Text("\(multiplicand) x \(multiplier) = ?")
                 }
+                HStack(spacing: 20) {
+                    ForEach(0..<3) { answerIndex in
+                        Button {
+                        } label: {
+                            Text("\(answerArray[Int(answerIndex)])")
+                                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 100)
+                                .background(.red)
+                                .foregroundStyle(.white)
+                        }
+                    }
+                }
             }
         }
     }
@@ -53,16 +65,31 @@ struct ContentView: View {
     }
     
     func generateAnswerArray() {
+        let correctAnswer = multiplicand * multiplier
+        
+        var randomAnswer = 0
+        
+        answerArray = []
         correctAnswerIndex = Int.random(in: 0..<3)
+        
         for i in 0..<3 {
+            randomAnswer = randomValidAnswer()
+            
+            while randomAnswer == correctAnswer {
+                randomAnswer = randomValidAnswer()
+            }
+            
             if i == correctAnswerIndex {
-                answerArray.append(multiplicand * multiplier)
+                answerArray.append(correctAnswer)
             } else {
-                answerArray.append(Int.random(in: 2...(highestMultiplicationTable * highestMultiplicationTable)))
+                answerArray.append(randomAnswer)
             }
         }
     }
     
+    func randomValidAnswer() -> Int {
+        return Int.random(in: 2...(highestMultiplicationTable * highestMultiplicationTable))
+    }
 }
 
 #Preview {
