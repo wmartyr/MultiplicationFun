@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var highestMultiplicationTable = 0
-    @State private var questionNumber = 5
+    @State private var questionNumber = 0
+    @State private var numberOfQuestions = 5
     @State private var multiplicand = 2
     @State private var multiplier = 12
     @State private var correctAnswerIndex = 0
@@ -36,7 +37,7 @@ struct ContentView: View {
                     }
                 }
                 Text("How many questions do you want")
-                Picker("Question number", selection: $questionNumber) {
+                Picker("Question number", selection: $numberOfQuestions) {
                     ForEach(questionNumbers, id: \.self) {
                         Text(String($0))
                     }
@@ -69,6 +70,11 @@ struct ContentView: View {
             Button("Continue", action: newQuestion)
         } message: {
             Text("Your score is \(score)")
+        }
+        .alert("Game Over",isPresented: $endOfGame) {
+            Button("Restart", action: restartGame)
+        } message: {
+            Text("Your score is \(score) / \(numberOfQuestions)")
         }
     }
     
@@ -117,9 +123,21 @@ struct ContentView: View {
             scoreTitle = "Correct"
             score += 1
         } else {
-            scoreTitle = "Correct answer is \(answerArray[correctAnswerIndex])"
+            scoreTitle = "That's not correct. The correct answer is \(answerArray[correctAnswerIndex])"
         }
-        showingScore = true
+        questionNumber += 1
+        if questionNumber <= numberOfQuestions - 1 {
+            showingScore = true
+        } else {
+            endOfGame = true
+        }
+    }
+    
+    func restartGame() {
+        questionNumber = 0
+        score = 0
+        
+        newQuestion()
     }
 }
 
