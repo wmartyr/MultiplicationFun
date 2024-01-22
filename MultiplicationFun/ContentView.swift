@@ -17,6 +17,7 @@ struct ContentView: View {
     @State private var score = 0
     @State private var answerArray = [0, 0, 0]
     @State private var scoreTitle = ""
+    @State private var endGameTitle = ""
     @State private var showingScore = false
     @State private var endOfGame = false
     
@@ -71,7 +72,7 @@ struct ContentView: View {
         } message: {
             Text("Your score is \(score)")
         }
-        .alert("Game Over",isPresented: $endOfGame) {
+        .alert(endGameTitle, isPresented: $endOfGame) {
             Button("Restart", action: restartGame)
         } message: {
             Text("Your score is \(score) / \(numberOfQuestions)")
@@ -113,15 +114,20 @@ struct ContentView: View {
         print("chosenIndex: \(chosenIndex)")
         print("correctAnswerIndex: \(correctAnswerIndex)")
         if chosenIndex == correctAnswerIndex {
-            scoreTitle = "Correct"
+            scoreTitle = "Correct!"
             score += 1
         } else {
-            scoreTitle = "That's not correct. The correct answer is \(answerArray[correctAnswerIndex])"
+            scoreTitle = "That's not it. The correct answer is \(answerArray[correctAnswerIndex])."
         }
         questionNumber += 1
         if questionNumber <= numberOfQuestions - 1 {
             showingScore = true
         } else {
+            if score >= Int(floor(0.75 * Double(numberOfQuestions))) {
+                endGameTitle = "Good Job!"
+            } else {
+                endGameTitle = "Try to play more to improve your score!"
+            }
             endOfGame = true
         }
     }
