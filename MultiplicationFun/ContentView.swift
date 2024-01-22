@@ -25,44 +25,48 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                HStack {
-                    Text("Enter the tables to practice")
-                    Picker("Enter the tables to practice", selection: $highestMultiplicationTable) {
-                        ForEach(2..<13) {
-                            Text("Up to \($0)")
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [.white, .blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
+                VStack(spacing: 20) {
+                    HStack {
+                        Text("Enter the tables to practice")
+                        Picker("Enter the tables to practice", selection: $highestMultiplicationTable) {
+                            ForEach(2..<13) {
+                                Text("Up to \($0)")
+                            }
+                        }
+                        .onChange(of: highestMultiplicationTable){
+                            generateAnswerArray()
                         }
                     }
-                    .onChange(of: highestMultiplicationTable){
-                        generateAnswerArray()
-                    }
-                }
-                Text("How many questions do you want")
-                Picker("Question number", selection: $numberOfQuestions) {
-                    ForEach(questionNumbers, id: \.self) {
-                        Text(String($0))
-                    }
-                }
-                .pickerStyle(.segmented)
-                Text("\(multiplicand) x \(multiplier) = ?")
-                Spacer()
-                HStack() {
-                    ForEach(0..<3) { number in
-                        Button {
-                            buttonTapped(number)
-                        } label: {
-                            Text("\(answerArray[Int(number)])")
-                                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 100)
-                                .background(.red)
-                                .foregroundStyle(.white)
-                                .clipShape(.rect(cornerRadius: 20))
+                    Text("How many questions do you want")
+                    Picker("Question number", selection: $numberOfQuestions) {
+                        ForEach(questionNumbers, id: \.self) {
+                            Text(String($0))
                         }
                     }
+                    .pickerStyle(.segmented)
+                    Text("\(multiplicand) x \(multiplier) = ?")
+                    Spacer()
+                    HStack() {
+                        ForEach(0..<3) { number in
+                            Button {
+                                buttonTapped(number)
+                            } label: {
+                                Text("\(answerArray[Int(number)])")
+                                    .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 100)
+                                    .background(.blue)
+                                    .foregroundStyle(.white)
+                                    .clipShape(.rect(cornerRadius: 20))
+                            }
+                        }
+                    }
+                    Spacer()
                 }
-                Spacer()
+                .navigationTitle("Multiplication Fun")
+                .padding(30)
             }
-            .navigationTitle("Multiplication Fun")
-            .padding(30)
         }
 
 
