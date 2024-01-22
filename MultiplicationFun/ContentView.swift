@@ -33,7 +33,7 @@ struct ContentView: View {
                         }
                     }
                     .onChange(of: highestMultiplicationTable){
-                        newQuestion()
+                        generateAnswerArray()
                     }
                 }
                 Text("How many questions do you want")
@@ -65,9 +65,9 @@ struct ContentView: View {
         }
 
 
-        .onAppear(perform: newQuestion)
+        .onAppear(perform: generateAnswerArray)
         .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: newQuestion)
+            Button("Continue", action: generateAnswerArray)
         } message: {
             Text("Your score is \(score)")
         }
@@ -78,15 +78,13 @@ struct ContentView: View {
         }
     }
     
-    func generateNumbers() {
-        multiplicand = Int.random(in: 2...(highestMultiplicationTable + 2))
-        multiplier = Int.random(in: 1...12)
-    }
     
     func generateAnswerArray() {
-        let correctAnswer = multiplicand * multiplier
+        multiplicand = Int.random(in: 2...(highestMultiplicationTable + 2))
+        multiplier = Int.random(in: 1...12)
         correctAnswerIndex = Int.random(in: 0..<3)
         
+        let correctAnswer = multiplicand * multiplier
         var randomAnswer = 0
         
         answerArray = []
@@ -110,11 +108,6 @@ struct ContentView: View {
         return Int.random(in: 2...((highestMultiplicationTable + 2) * 12))
     }
     
-    func newQuestion() {
-        generateNumbers()
-        generateAnswerArray()
-    }
-    
     func buttonTapped(_ chosenIndex: Int) {
         print("Button \(chosenIndex) tapped.")
         print("chosenIndex: \(chosenIndex)")
@@ -136,8 +129,7 @@ struct ContentView: View {
     func restartGame() {
         questionNumber = 0
         score = 0
-        
-        newQuestion()
+        generateAnswerArray()
     }
 }
 
